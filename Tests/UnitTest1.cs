@@ -10,6 +10,7 @@ namespace Tests
         [TestCase("1,2", 3)]
         [TestCase("1,2,3,4,5", 15)]
         [TestCase("1\n2,3", 6)]
+        [TestCase("//;\n1;2", 3)]
         public void GivenString_Adds_ReturnsInt(string input, int expected)
         {
             var foo = new Foo();
@@ -28,7 +29,7 @@ namespace Tests
                 return 0;
             }
 
-            return v.Split(',', System.StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).Sum();
+            return v.Split(new char[] {',', '\n'}, System.StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).Sum();
         }
     }
 }
