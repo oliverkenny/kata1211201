@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Linq;
 
 namespace Tests
 {
@@ -8,6 +9,7 @@ namespace Tests
         [TestCase("1", 1)]
         [TestCase("1,2", 3)]
         [TestCase("1,2,3,4,5", 15)]
+        [TestCase("1\n2,3", 6)]
         public void GivenString_Adds_ReturnsInt(string input, int expected)
         {
             var foo = new Foo();
@@ -21,11 +23,12 @@ namespace Tests
     {
         public int Add(string v)
         {
-            if (v == "1,2") {
-                return 3;
+            if (string.IsNullOrEmpty(v))
+            {
+                return 0;
             }
 
-            return string.IsNullOrEmpty(v) ? 0 : 1;
+            return v.Split(',', System.StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).Sum();
         }
     }
 }
