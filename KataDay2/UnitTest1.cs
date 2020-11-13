@@ -1,36 +1,22 @@
 using NUnit.Framework;
+using System.Linq;
 
 namespace KataDay2
 {
     public class StringCalculatorTests
     {
-        [Test]
-        public void Add_TakesEmptyString_ReturnsZero()
+        [TestCase("", 0)]
+        [TestCase("1", 1)]
+        [TestCase("1,2", 3)]
+        [TestCase("1,2,3,4,5", 15)]
+        [TestCase("1\n2,3", 6)]
+        public void Add_TakesEmptyString_ReturnsZero(string numberString, int expectedOutcome)
         {
             var calc = new StringCalculator();
 
-            var result = calc.Add("");
+            var result = calc.Add(numberString);
 
-            Assert.AreEqual(0, result);
-        }
-
-        [Test]
-        public void Add_TakesSingleNumberString_ReturnsAsInt()
-        {
-            var calc = new StringCalculator();
-
-            var result = calc.Add("1");
-
-            Assert.AreEqual(1, result);
-        }
-
-        [Test]
-        public void Add_TakesTwoNumberString_ResturnsSumAsInt() {
-            var calc = new StringCalculator();
-
-            var result = calc.Add("1,2");
-
-            Assert.AreEqual(3, result);
+            Assert.AreEqual(expectedOutcome, result);
         }
     }
 
@@ -38,7 +24,12 @@ namespace KataDay2
     {
         public int Add(string numberString)
         {
-            return numberString == "1" ? 1 : 0;
+            if (string.IsNullOrEmpty(numberString))
+            {
+                return 0;
+            }
+
+            return numberString.Split(',', System.StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).Sum();
         }
     }
 }
