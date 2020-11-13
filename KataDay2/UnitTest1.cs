@@ -1,27 +1,35 @@
 using NUnit.Framework;
-using System;
 
 namespace KataDay2
 {
-    public class Tests
+    public class StringCalculatorTests
     {
-
         [Test]
-        public void Add_TakesEmpty_ReturnsZero()
+        public void Add_TakesEmptyString_ReturnsZero()
         {
-            var k = new Kata();
+            var calc = new StringCalculator();
 
-            var result = k.Add("");
+            var result = calc.Add("");
 
             Assert.AreEqual(0, result);
         }
+
+        [Test]
+        public void Add_TakesSingleNumberString_ReturnsAsInt()
+        {
+            var calc = new StringCalculator();
+
+            var result = calc.Add("1");
+
+            Assert.AreEqual(1, result);
+        }
     }
 
-    public class Kata
+    public class StringCalculator
     {
-        public int Add(string v)
+        public int Add(string numberString)
         {
-            throw new NotImplementedException();
+            return 0;
         }
     }
 }

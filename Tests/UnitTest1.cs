@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Tests
@@ -29,7 +30,14 @@ namespace Tests
                 return 0;
             }
 
-            return v.Split(new char[] {',', '\n'}, System.StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).Sum();
+            var delims = new List<string> { "//", ",", "\n" };
+
+            if (v.StartsWith("//"))
+            {
+                delims.Add(v[2].ToString());
+            }
+
+            return v.Split(delims.ToArray(), System.StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).Sum();
         }
     }
 }
