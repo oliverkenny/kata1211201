@@ -22,13 +22,14 @@ namespace KataDay2
             Assert.AreEqual(expectedOutcome, result);
         }
 
-        [Test]
-        public void Add_TakesNegativeNumber_ThrowsException() {
+        [TestCase("1,-2", "negatives are not allowed -2")]
+        [TestCase("-1,-2,-3", "negatives are not allowed -1 -2 -3")]
+        public void Add_TakesNegativeNumber_ThrowsException(string numberString, string exceptionMessage) {
             var calc = new StringCalculator();
 
-            var exception = Assert.Throws<Exception>(() => calc.Add("1,-2"));
+            var exception = Assert.Throws<Exception>(() => calc.Add(numberString));
 
-            Assert.AreEqual("negatives are not allowed -2", exception.Message);
+            Assert.AreEqual(exceptionMessage, exception.Message);
         }
     }
 
@@ -43,7 +44,15 @@ namespace KataDay2
                 numberString = numberString.Substring(3);
             }
 
-            return numberString.Split(delims.ToArray(), System.StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).Sum();
+            return numberString.Split(delims.ToArray(), System.StringSplitOptions.RemoveEmptyEntries).Select(x =>
+            {
+                var num = int.Parse(x);
+                if (num < 0)
+                {
+                    throw new Exception("negatives are not allowed " + x.ToString());
+                }
+                return num;
+            }).Sum();
         }
     }
 }
